@@ -1,22 +1,22 @@
 {
-  "name": "rewrite-css-urls",
-  "version": "1.0.0",
-  "description": "Parses CSS file and finds URL references so that they can be rewritten",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/philidem/rewrite-css-urls.git"
-  },
-  "keywords": [
-    "CSS",
-    "URL",
-    "rewrite",
-    "proxy"
-  ],
-  "author": "Phillip Gates-Idem <phillip.idem@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/philidem/rewrite-css-urls/issues"
-  },
-  "homepage": "https://github.com/philidem/rewrite-css-urls#readme"
+    "name": "rewrite-css-urls",
+    "description": "Parses CSS file and finds URL references so that they can be rewritten",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/philidem/rewrite-css-urls.git"
+    },
+    "keywords": [
+        "CSS",
+        "URL",
+        "rewrite",
+        "proxy"
+    ],
+    "author": "Phillip Gates-Idem <phillip.idem@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/philidem/rewrite-css-urls/issues"
+    },
+    "homepage": "https://github.com/philidem/rewrite-css-urls#readme",
+    "version": "1.0.1"
 }
