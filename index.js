@@ -10,7 +10,7 @@ const tokenizerRegExp = /url\(\s*[\"\']?([^\"\'\)]+)[\"\']?\s*\)|\@import\s+\"([
 // 5) "
 
 function Replacement(url, start, end) {
-    this.url = undefined;
+    this.url = url;
     this.start = start;
     this.end = end;
 }
@@ -43,7 +43,6 @@ exports.process = function(code, options) {
         } else if (matches[5]) {
             inString = true;
         } else if ((url = matches[1])) {
-
             // ignore "data:" URLs
             if ((url.indexOf('data:') !== 0) &&
                 replaceAssetUrl && (replacementUrl = replaceAssetUrl(url))) {
