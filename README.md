@@ -19,14 +19,14 @@ This utility searches for `url(*)` and `@import "*"` patterns specifically.
 
 ### Find
 ```javascript
-require('rewrite-css-urls').findUrlReferences(cssCode, function(urlRef) {
+require('rewrite-css-urls').find(cssCode, function(urlRef) {
     console.log('Found URL: ' + urlRef.url);
 });
 ```
 
 ### Find & Replace
 ```javascript
-var transformedCssCode = require('rewrite-css-urls').process(cssCode, {
+var transformedCssCode = require('rewrite-css-urls').findAndReplace(cssCode, {
     replaceUrl: function(urlRef) {
         return urlRef.url.replace('blah.com', 'mycompany.com');
     }
