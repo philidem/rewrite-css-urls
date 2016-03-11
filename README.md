@@ -67,7 +67,7 @@ and `replaceAssetUrl` functions.
 
 | Property    | JavaScript Type    | Description |
 |-------------|--------------------|-------------|
-| `url`       | `String`           | The raw CSS code |
+| `url`       | `String`           | The actual URL
 | `start`     | `Number`           | Start character position |
 | `end`       | `Number`           | End character position |
 | `type`      | `Number`           | Either `require('rewrite-css-urls').UrlType.IMPORT_URL` (@import URL) or `require('rewrite-css-urls').UrlType.ASSET_URL` (image or font URL) |
