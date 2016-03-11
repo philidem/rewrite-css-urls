@@ -1,29 +1,29 @@
 {
-  "name": "rewrite-css-urls",
-  "description": "Parses CSS file and finds URL references so that they can be rewritten",
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/philidem/rewrite-css-urls.git"
-  },
-  "keywords": [
-    "CSS",
-    "URL",
-    "rewrite",
-    "proxy"
-  ],
-  "author": "Phillip Gates-Idem <phillip.idem@gmail.com>",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/philidem/rewrite-css-urls/issues"
-  },
-  "homepage": "https://github.com/philidem/rewrite-css-urls#readme",
-  "version": "1.0.2",
-  "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^2.4.5"
-  },
-  "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --ui bdd --timeout 7000 --reporter spec ./test/*test.js"
-  }
+    "name": "rewrite-css-urls",
+    "description": "Parses CSS file and finds URL references so that they can be rewritten",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/philidem/rewrite-css-urls.git"
+    },
+    "keywords": [
+        "CSS",
+        "URL",
+        "rewrite",
+        "proxy"
+    ],
+    "author": "Phillip Gates-Idem <phillip.idem@gmail.com>",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/philidem/rewrite-css-urls/issues"
+    },
+    "homepage": "https://github.com/philidem/rewrite-css-urls#readme",
+    "devDependencies": {
+        "chai": "^3.5.0",
+        "mocha": "^2.4.5"
+    },
+    "scripts": {
+        "test": "./node_modules/mocha/bin/mocha --ui bdd --timeout 7000 --reporter spec ./test/*test.js"
+    },
+    "version": "1.0.3"
 }
