@@ -1,6 +1,6 @@
 'use strict';
 
-var tokenizerRegExp = /url\(\s*[\"\']?([^\"\'\)]+)[\"\']?\s*\)|\@import\s+\"([^\"]+)\"|\/\*|\*\/|\\"/g;
+var tokenizerRegExp = /url\(\s*[\"\']?([^\"\'\)]+)[\"\']?\s*\)|\@import\s+\"([^\"]+)\"|(\/\*)|(\*\/)/g;
 
 // Matching groups:
 // 1) url(...)
@@ -9,9 +9,9 @@ var tokenizerRegExp = /url\(\s*[\"\']?([^\"\'\)]+)[\"\']?\s*\)|\@import\s+\"([^\
 // 4) */
 // 5) "
 
-var Type = exports.Type = {
-    'IMPORT_URL': 1,
-    'URL': 2
+var UrlType = exports.UrlType = {
+    'IMPORT_URL': {},
+    'ASSET_URL': {}
 };
 
 function UrlRef(url, start, end, type) {
@@ -21,10 +21,9 @@ function UrlRef(url, start, end, type) {
     this.type = type;
 }
 
-function findUrlReferences(code, options) {
+function find(code, options) {
     var matches;
     var inMultiLineComment = false;
-    var inString = false;
     var urlStartPos;
     var match;
     var urlReferences = [];
@@ -41,19 +40,12 @@ function findUrlReferences(code, options) {
 
     while((matches = tokenizerRegExp.exec(code)) != null) {
         var url;
-
         if (inMultiLineComment) {
             if (matches[4]) {
                 inMultiLineComment = false;
             }
-        } else if (inString) {
-            if (matches[5]) {
-                inString = false;
-            }
         } else if (matches[3]) {
             inMultiLineComment = true;
-        } else if (matches[5]) {
-            inString = true;
         } else if ((url = matches[1])) {
             // ignore "data:" URLs
             if (url.indexOf('data:') !== 0) {
@@ -68,7 +60,7 @@ function findUrlReferences(code, options) {
                     url,
                     urlStartPos,
                     urlStartPos + url.length,
-                    Type.URL));
+                    UrlType.ASSET_URL));
 
                 urlReferences.push(urlRef);
             }
@@ -82,24 +74,24 @@ function findUrlReferences(code, options) {
                 url,
                 urlStartPos,
                 urlStartPos + url.length,
-                Type.IMPORT_URL
+                UrlType.IMPORT_URL
             ));
         }
     }
 }
 
-exports.findUrlReferences = findUrlReferences;
+exports.find = find;
 
-exports.process = function(code, options) {
-    var replaceImportUrl = options.replaceImportUrl;
-    var replaceAssetUrl = options.replaceAssetUrl;
+exports.findAndReplace = function(code, options) {
+    var replaceImportUrl = options.replaceImportUrl || options.replaceUrl;
+    var replaceAssetUrl = options.replaceAssetUrl || options.replaceUrl;
     var replacementUrl;
 
     var urlReferences = options.urlReferences;
 
     if (!urlReferences) {
         urlReferences = [];
-        findUrlReferences(code, function(urlRef) {
+        find(code, function(urlRef) {
             urlReferences.push(urlRef);
         });
     }
@@ -110,7 +102,7 @@ exports.process = function(code, options) {
     // string so that character ranges don't change!!!
     while(--i >= 0) {
         var urlRef = urlReferences[i];
-        if (urlRef.type === Type.IMPORT_URL) {
+        if (urlRef.type === UrlType.IMPORT_URL) {
             if (!replaceImportUrl || !(replacementUrl = replaceImportUrl(urlRef))) {
                 continue;
             }
