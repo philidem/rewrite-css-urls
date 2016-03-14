@@ -1,6 +1,6 @@
 'use strict';
 
-var tokenizerRegExp = /url\(\s*[\"\']?([^\"\'\)]+)[\"\']?\s*\)|\@import\s+\"([^\"]+)\"|(\/\*)|(\*\/)/g;
+var tokenizerRegExp = /(@import\s+)?url\(\s*[\"\']?([^\"\'\)]+)[\"\']?\s*\)|@import\s+[\"\']([^\"\']+)[\"\']|(\/\*)|(\*\/)/g;
 
 // Matching groups:
 // 1) url(...)
@@ -41,12 +41,20 @@ function find(code, options) {
     while((matches = tokenizerRegExp.exec(code)) != null) {
         var url;
         if (inMultiLineComment) {
-            if (matches[4]) {
+            if (matches[5]) {
                 inMultiLineComment = false;
             }
-        } else if (matches[3]) {
+        } else if (matches[4]) {
             inMultiLineComment = true;
-        } else if ((url = matches[1])) {
+        } else if ((url = matches[2])) {
+            // Found one of the following:
+            // url("<url>")
+            // url('<url>')
+            // url(<url>)
+            // @import url("<url>")
+            // @import url('<url>')
+            // @import url(<url>)
+
             // ignore "data:" URLs
             if (url.indexOf('data:') !== 0) {
                 match = matches[0];
@@ -60,14 +68,16 @@ function find(code, options) {
                     url,
                     urlStartPos,
                     urlStartPos + url.length,
-                    UrlType.ASSET_URL));
+                    matches[1] ? UrlType.IMPORT_URL : UrlType.ASSET_URL));
 
                 urlReferences.push(urlRef);
             }
-        } else if ((url = matches[2])) {
+        } else if ((url = matches[3])) {
             match = matches[0];
 
-            // Found: @import "<url>"
+            // Found one of the following:
+            // @import "<url>"
+            // @import '<url>'
             urlStartPos = matches.index + match.indexOf(url);
 
             forEachFn(new UrlRef(

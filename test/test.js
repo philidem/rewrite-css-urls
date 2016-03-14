@@ -23,16 +23,21 @@ describe('rewrite-css-urls', function() {
             found.push(urlRef.url);
         });
 
-        expect(found.length).to.equal(2);
-        expect(found[0]).to.equal('good1.png');
-        expect(found[1]).to.equal('good2.png');
+        expect(found).to.deep.equal([
+            'good1.png',
+            'good2.png'
+        ]);
     });
 
     it('should find import URLs', function() {
         let cssCode =
             `
-            @import "abc.css"
-            @import "def.css"
+            @import 'abc.css' screen;
+            @import "def.css";
+
+            @import url(123.css);
+            @import url('456.css');
+            @import url("789.css");
             `;
 
         var found = [];
@@ -41,9 +46,13 @@ describe('rewrite-css-urls', function() {
             expect(urlRef.type).to.equal(rewriteCssUrls.UrlType.IMPORT_URL);
         });
 
-        expect(found.length).to.equal(2);
-        expect(found[0]).to.equal('abc.css');
-        expect(found[1]).to.equal('def.css');
+        expect(found).to.deep.equal([
+            'abc.css',
+            'def.css',
+            '123.css',
+            '456.css',
+            '789.css'
+        ]);
     });
 
     it('should find asset URLs', function() {
@@ -60,9 +69,10 @@ describe('rewrite-css-urls', function() {
             expect(urlRef.type).to.equal(rewriteCssUrls.UrlType.ASSET_URL);
         });
 
-        expect(found.length).to.equal(3);
-        expect(found[0]).to.equal('abc.png');
-        expect(found[1]).to.equal('def.png');
-        expect(found[2]).to.equal('ghi.png');
+        expect(found).to.deep.equal([
+            'abc.png',
+            'def.png',
+            'ghi.png'
+        ]);
     });
 });
