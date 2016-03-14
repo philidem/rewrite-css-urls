@@ -25,5 +25,5 @@
     "scripts": {
         "test": "./node_modules/mocha/bin/mocha --ui bdd --timeout 7000 --reporter spec ./test/*test.js"
     },
-    "version": "1.0.3"
+    "version": "1.0.4"
 }
